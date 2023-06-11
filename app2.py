@@ -1,5 +1,6 @@
 import datetime
 import requests
+import os
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -29,7 +30,7 @@ def comments():
 def artist(id):
     url = "https://deezerdevs-deezer.p.rapidapi.com/artist/" + str(id)
     headers = {
-	    "X-RapidAPI-Key": "62f9d27373msheab179a8c3c5c26p14d701jsn2a5de55af2c8",
+	    "X-RapidAPI-Key": os.environ['rapidapi_deezer_key'],
 	    "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com"
     }
 
