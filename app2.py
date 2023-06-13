@@ -51,8 +51,22 @@ def artists():
 
     return render_template('music.html', artists=artists)
     
-@app.route('/ajax/')
-def ajax():
+@app.route('/ajax/<timeframe>/')
+def ajax(timeframe):
+    print(timeframe)
+    artists = { 1905:"The Distillers", 
+        809:"OMD", 
+        1500: "Rancid", 
+        1800:"Sex Pistols",
+        3200:"Brody Dalle",
+        6400:"The Interrupters"}
+
+    return jsonify(artists)
+    
+@app.route('/ajax4/<start>/<end>/')
+def ajax4(start, end):
+    print(start)
+    print(end)
     artists = { 1905:"The Distillers", 
         809:"OMD", 
         1500: "Rancid", 

@@ -23,7 +23,7 @@
 </div>
 
 <div class="w3-quarter">
-<button class="w3-button w3-black" onclick=loadxml()>Button Button</button>
+<button id="chartbutton" class="w3-button w3-black" onclick=loadxml() disabled>Chart</button>
 </div>
 
 
@@ -34,8 +34,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="w3-container">  
-  
+<!-- <div class="w3-container" style="display:none"> -->  
+<div id="maindiv" class="w3-container" style="visibility:hidden">
+
 {# a comment #}  
 {% for key,value in artists.items() %}
 
