@@ -1,35 +1,63 @@
 {% extends 'basemusic.html' %}
 
 {% block header %}
-<header class="w3-container w3-orange w3-center w3-margin-top w3-margin-right w3-margin-left">
-  <h1>Header</h1>
+<header class="w3-container w3-center w3-margin-top w3-margin-down w3-margin-right w3-margin-left">
+<h1>Music Artist</h1>
+
+<div class="w3-row-padding">
+<p id="demo"></p>
+<div class="w3-quarter">
+  <input type="date" id="start" name="start" disabled>
+</div>
+<div class="w3-quarter">
+  <input type="date" id="end" name="end" disabled>
+</div>
+<div class="w3-quarter">
+  <select class="w3-select" id="option_time" onchange="select_time()">
+  <option value="" disabled selected>Choose your time interval:</option>
+  <option value="1">Last Month</option>
+  <option value="2">Last 3 Months</option>
+  <option value="3">Last Year</option>
+  <option value="4">Custom Range</option>
+  </select> 
+</div>
+
+<div class="w3-quarter">
+<button class="w3-button w3-black" onclick=loadxml()>Button Button</button>
+</div>
+
+
+</div> 
+
+ 
 </header> 
 {% endblock %}
 
 {% block content %}
-   
-<div class="w3-container">
-<p>The w3-container class is an important w3.CSS class.</p>
+<div class="w3-container">  
   
-  
- <div class="w3-row-padding">
-  
+{# a comment #}  
 {% for key,value in artists.items() %}
-{# % if loop.index != 2 % #}
-{# a comment #}
-        <div class="w3-quarter">
+
+{% if loop.index - 1 % 4 == 0 %}
+<div class="w3-row-padding">
+{% endif %}
+
+<div class="w3-quarter">
 <div class="w3-display-container w3-margin-bottom w3-margin-top w3-margin-right w3-margin-left">
 <img src="/static/images/img.jpg" style="width:100%">
- <div class="w3-small w3-white w3-display-bottomleft">{{key}}-{{value}}</div>     
- </div>
- </div>
+<div class="w3-small w3-white w3-display-bottomleft">{{key}}-{{value}}</div>     
+</div>
+</div>
 
+{% if loop.index % 4 == 0 %}
+</div>
+{% endif %}
+            
+{% endfor %}
 
-            {# % endif % #}
-        {% endfor %}
 </div>   
 
-</div>   
 {% endblock %}
 
 {% block footer %}

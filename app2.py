@@ -1,7 +1,7 @@
 import datetime
 import requests
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -42,6 +42,22 @@ def artist(id):
     
 @app.route('/artists/')
 def artists():
-    artists = { 1905:"The Distillers", 809:"OMD", 1500: "Rancid", 1800:"Sex Pistols" }
+    artists = { 1905:"The Distillers", 
+        809:"OMD", 
+        1500: "Rancid", 
+        1800:"Sex Pistols",
+        3200:"Brody Dalle",
+        6400:"The Interrupters"}
 
     return render_template('music.html', artists=artists)
+    
+@app.route('/ajax/')
+def ajax():
+    artists = { 1905:"The Distillers", 
+        809:"OMD", 
+        1500: "Rancid", 
+        1800:"Sex Pistols",
+        3200:"Brody Dalle",
+        6400:"The Interrupters"}
+
+    return jsonify(artists)
