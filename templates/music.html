@@ -4,15 +4,15 @@
 <header class="w3-container w3-center w3-margin-top w3-margin-down w3-margin-right w3-margin-left">
 <h1>Music Artist</h1>
 
-<div class="w3-row-padding">
+<div class="w3-row-padding w3-border w3-padding-16">
 <p id="demo"></p>
-<div class="w3-quarter">
-  <input type="date" id="start" name="start" disabled>
+<div class="w3-col m2">
+  <input class="w3-input" type="date" id="start" disabled>
 </div>
-<div class="w3-quarter">
-  <input type="date" id="end" name="end" disabled>
+<div class="w3-col m2">
+  <input class="w3-input" type="date" id="end" disabled>
 </div>
-<div class="w3-quarter">
+<div class="w3-col m3">
   <select class="w3-select" id="option_time" onchange="select_time()">
   <option value="" disabled selected>Choose your time interval:</option>
   <option value="1">Last Month</option>
@@ -22,9 +22,20 @@
   </select> 
 </div>
 
-<div class="w3-quarter">
-<button id="chartbutton" class="w3-button w3-black" onclick=loadxml() disabled>Chart</button>
+<div class="w3-col m2">
+  <select class="w3-select" id="option_chart">
+  <option value="" disabled selected>Choose your chart type:</option>
+  <option value="1">Artist</option>
+  <option value="2">Song</option>
+  <option value="3">Album</option>
+  </select>
 </div>
+
+
+<div class="w3-col m3">
+<button id="chartbutton" class="w3-block w3-orange w3-xlarge" onclick=loadxml() disabled>Chart</button>
+</div>
+
 
 
 </div> 

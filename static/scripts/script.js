@@ -36,6 +36,9 @@ function loadxml() {
   if (t == 4) {
     start = document.getElementById("start").value;
     end = document.getElementById("end").value;
+    if (start >= end) {
+        return
+    }
     xhttp.open("GET", "/ajax4/" + start + "/" + end + "/");
     xhttp.send();
   }
