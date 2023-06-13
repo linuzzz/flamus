@@ -3,7 +3,7 @@ import requests
 import os
 from flask import Flask, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 @app.route('/')
 def hello():
@@ -39,3 +39,9 @@ def artist(id):
     print(artist.json())
     
     return render_template('artist.html', artist=artist.json())
+    
+@app.route('/artists/')
+def artists():
+    artists = { 1905:"The Distillers", 809:"OMD", 1500: "Rancid", 1800:"Sex Pistols" }
+
+    return render_template('music.html', artists=artists)
