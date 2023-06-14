@@ -1,16 +1,22 @@
 function select_time() {
   var t = document.getElementById("option_time").value;
   //document.getElementById("demo").innerHTML = "You selected: " + t;
-  document.getElementById("chartbutton").disabled = false;
+  send = document.getElementById("send");
+  send.classList.remove("w3-disabled");
+  
   
   if (t == 4) {
-    document.getElementById("start").disabled = false;
-    document.getElementById("end").disabled = false;
+    s = document.getElementById("start");
+    s.classList.remove("w3-disabled");
+    e = document.getElementById("end");
+    e.classList.remove("w3-disabled");
     }
   else
   {
-    document.getElementById("start").disabled = true;
-    document.getElementById("end").disabled = true;
+    s = document.getElementById("start");
+    s.classList.add("w3-disabled");
+    e = document.getElementById("end");
+    e.classList.add("w3-disabled");
     }
 }
 
@@ -20,13 +26,19 @@ function loadxml() {
   xhttp.onload = function() {
     //document.getElementById("maindiv").innerHTML = this.responseText;
     document.getElementById("maindiv").style.visibility = "visible"
+    bu = document.getElementById("chartbutton");
+    bu.innerHTML = "Update Search";
       
     var obj = JSON.parse(this.responseText);
+    index = 1
+    count = Object.keys(obj).length;
+    console.log(count);
     for(var key in obj){
         if (obj.hasOwnProperty(key)){
             var value=obj[key];
+            document.getElementById("name-"+index).innerHTML = value;
+            index = index +1;
             //document.write("<br> - " + key + ": " + value);
-            
         }
     }
       

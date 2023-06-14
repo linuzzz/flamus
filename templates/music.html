@@ -5,7 +5,13 @@
 <h1>Music Artist</h1>
 
 <div class="w3-row-padding w3-border w3-padding-16">
-<p id="demo"></p>
+<p id="demo">
+{% if artists|length %}
+    variable is not empty
+{% else %}
+    variable is empty
+{% endif %}
+</p>
 <div class="w3-col m2">
   <input class="w3-input" type="date" id="start" disabled>
 </div>
@@ -31,34 +37,34 @@
   </select>
 </div>
 
-
 <div class="w3-col m3">
-<button id="chartbutton" class="w3-block w3-orange w3-xlarge" onclick=loadxml() disabled>Chart</button>
+
+<button id="chartbutton" class="w3-block w3-orange w3-xlarge w3-disabled" onclick=loadxml()>Search</button>
+
 </div>
 
-
-
 </div> 
-
  
 </header> 
 {% endblock %}
 
 {% block content %}
 <!-- <div class="w3-container" style="display:none"> -->  
-<div id="maindiv" class="w3-container" style="visibility:hidden">
+<div class="w3-container" id="maindiv" style="visibility:hidden">
 
 {# a comment #}  
 {% for key,value in artists.items() %}
 
-{% if loop.index - 1 % 4 == 0 %}
+{% if (loop.index - 1) % 4 == 0 %}
 <div class="w3-row-padding">
 {% endif %}
 
 <div class="w3-quarter">
 <div class="w3-display-container w3-margin-bottom w3-margin-top w3-margin-right w3-margin-left">
-<img src="/static/images/img.jpg" style="width:100%">
-<div class="w3-small w3-white w3-display-bottomleft">{{key}}-{{value}}</div>     
+<!-- It's important to increment imgsrc id for later retrivial in javascript ajax-->
+<img id="imgsrc-{{ loop.index }}" src="/static/images/img.jpg" style="width:100%">
+<!-- It's also important to increment name (for artist/song/album) id for later retrivial in javascript ajax-->
+<div id="name-{{ loop.index }}" class="w3-small w3-white w3-display-bottomleft">{{key}}-{{value}}</div>     
 </div>
 </div>
 
