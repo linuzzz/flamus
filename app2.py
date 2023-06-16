@@ -158,6 +158,20 @@ def ajax4(start, end):
 
     return jsonify(artists)
 
+
+@app.route('/ajax2/<chart_type>/')
+def ajax2(chart_type):
+    print("---")
+    print(chart_type)
+    print("---")
+    artists = listreturn2()
+    
+    return jsonify(artists)
+
+
+
+
+
 @app.route('/report/', methods = ['POST'])
 def report():
     if request.method == 'POST':
@@ -192,6 +206,12 @@ def report():
 def search():
     return render_template('query.html')
 
+@app.route('/start/')
+def start():
+    #return render_template('start.html')
+    return render_template('start.html', artists=listreturn())
+
+
 def listreturn():
     artists = {
         "place1":"holder1",
@@ -217,4 +237,32 @@ def listreturn():
     }
     
     return artists
+
+
+def listreturn2():
+    artists = {
+        "2place1":"2holder1",
+        "2place2":"2holder2",
+        "2place3":"2holder3",
+        "2place4":"2holder4",
+        "2place5":"2holder5",
+        "2place6":"2holder6",
+        "2place7":"2holder7",
+        "2place8":"2holder8",
+        "2place9":"2holder9",
+        "2place10":"2holder10",
+        "2place11":"2holder11",
+        "2place12":"2holder12",
+        "2place13":"2holder13",
+        "2place14":"2holder14",
+        "2place15":"2holder15",
+        "2place16":"2holder16",
+        "2place17":"2holder17",
+        "2place18":"2holder18",
+        "2place19":"2holder19",
+        "2place20":"2holder20"
+    }
+    
+    return artists
+
 
