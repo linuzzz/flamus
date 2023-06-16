@@ -1,12 +1,20 @@
 import requests
 import os
 from flask import Flask, render_template, jsonify, request
+#sqlite3 built into python, no need to pip install anything
+import sqlite3
 
 import spotipy
 import sys
 from spotipy.oauth2 import SpotifyClientCredentials
 
 app = Flask(__name__, static_url_path='/static')
+
+def get_db_connection():
+    conn = sqlite3.connect('music.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
 
 @app.route('/')
 def hello():
@@ -161,12 +169,12 @@ def ajax4(start, end):
 
 @app.route('/ajax2/<chart_type>/')
 def ajax2(chart_type):
-    print("---")
-    print(chart_type)
-    print("---")
-    artists = listreturn2()
+	print("---")
+	print(chart_type)
+	print("---")
+	artists = listreturn2()
     
-    return jsonify(artists)
+	return jsonify(artists)
 
 
 
@@ -174,46 +182,47 @@ def ajax2(chart_type):
 
 @app.route('/report/', methods = ['POST'])
 def report():
-    if request.method == 'POST':
-        try:
-            ot = request.form['option_time']
-        except KeyError:
-            ot = None
+	if request.method == 'POST':
+		try:
+			ot = request.form['option_time']
+		except KeyError:
+			ot = None
         
-        try:
-            start = request.form['start']
-        except KeyError:
-            start = None
+		try:
+			start = request.form['start']
+		except KeyError:
+			start = None
         
-        try:
-            end = request.form['end']
-        except KeyError:
-            end = None
+		try:
+			end = request.form['end']
+		except KeyError:
+			end = None
             
-        try:
-            querytype = request.form['type']
-        except KeyError:
-            querytype = None
+		try:
+			querytype = request.form['type']
+		except KeyError:
+			querytype = None
                 
-        print(start)
-        print(end)
-        print(ot)
-        print(querytype)
+		print(start)
+		print(end)
+		print(ot)
+		print(querytype)
     
-        return render_template('report.html', artists=listreturn())
+		return render_template('report.html', artists=listreturn())
     
 @app.route('/search/')
 def search():
-    return render_template('query.html')
+	return render_template('query.html')
 
 @app.route('/start/')
 def start():
-    #return render_template('start.html')
-    return render_template('start.html', artists=listreturn())
+	#return render_template('start.html')
+	listreturn3()
+	return render_template('start.html', artists=listreturn3())
 
 
 def listreturn():
-    artists = {
+	artists = {
         "place1":"holder1",
         "place2":"holder2",
         "place3":"holder3",
@@ -234,35 +243,45 @@ def listreturn():
         "place18":"holder18",
         "place19":"holder19",
         "place20":"holder20"
-    }
+	}
     
-    return artists
+	return artists
 
 
 def listreturn2():
-    artists = {
-        "2place1":"2holder1",
-        "2place2":"2holder2",
-        "2place3":"2holder3",
-        "2place4":"2holder4",
-        "2place5":"2holder5",
-        "2place6":"2holder6",
-        "2place7":"2holder7",
-        "2place8":"2holder8",
-        "2place9":"2holder9",
-        "2place10":"2holder10",
-        "2place11":"2holder11",
-        "2place12":"2holder12",
-        "2place13":"2holder13",
-        "2place14":"2holder14",
-        "2place15":"2holder15",
-        "2place16":"2holder16",
-        "2place17":"2holder17",
-        "2place18":"2holder18",
-        "2place19":"2holder19",
-        "2place20":"2holder20"
-    }
-    
-    return artists
+	artists = {
+   	"2place1":"2holder1",
+      "2place2":"2holder2",
+      "2place3":"2holder3",
+      "2place4":"2holder4",
+      "2place5":"2holder5",
+      "2place6":"2holder6",
+      "2place7":"2holder7",
+      "2place8":"2holder8",
+      "2place9":"2holder9",
+      "2place10":"2holder10",
+      "2place11":"2holder11",
+      "2place12":"2holder12",
+      "2place13":"2holder13",
+      "2place14":"2holder14",
+      "2place15":"2holder15",
+      "2place16":"2holder16",
+      "2place17":"2holder17",
+      "2place18":"2holder18",
+      "2place19":"2holder19",
+      "2place20":"2holder20"
+	}
+     
+	return artists
 
-
+def listreturn3():
+	artists = {}
+	conn = get_db_connection()
+	results = conn.execute('SELECT artist FROM music limit 20').fetchall()
+	index = 1
+	for row in results:
+		artists[index]=row[0]
+		index = index + 1
+		print(row[0])
+	conn.close()
+	return artists
