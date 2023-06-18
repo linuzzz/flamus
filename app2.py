@@ -8,11 +8,13 @@ import spotipy
 import sys
 from spotipy.oauth2 import SpotifyClientCredentials
 
+import datetime
+
 app = Flask(__name__, static_url_path='/static')
 
 def get_db_connection():
     conn = sqlite3.connect('music.db')
-    conn.row_factory = sqlite3.Row
+    #conn.row_factory = sqlite3.Row
     return conn
 
 
@@ -43,36 +45,6 @@ def hello():
 
     return render_template('music.html', artists=artists)
     
-
-@app.route('/chart/')
-def chart():
-    artists = { 
-        1905:"The Distillers", 
-        809:"OMD", 
-        1500:"Rancid", 
-        1800:"Sex Pistols",
-        3200:"Brody Dalle",
-        6400:"The Interrupters"}
-
-    return render_template('music.html', artists=artists)
-    
-
-@app.route('/spo/')
-def spo():
-    spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials())
-
-    name = 'Avicii'
-
-    results = spotify.search(q='artist:' + name, type='artist')
-    items = results['artists']['items']
-    print(name)
-    if len(items) > 0:
-        artist = items[0]
-        print(artist['name'], artist['images'][0]['url'])
-        
-    return render_template('about.html')
-    
-
 @app.route('/about/')
 def about():
     #url = "https://api.discogs.com/database/search/q=nirvana&type=artist&token=WqPZVKGWxZUTAPtqXjZEnQvihsfPlXUyELwNzTvx"
@@ -99,9 +71,9 @@ def about():
     #print(r.text)
     
     #headers = {
-	#    "query": "nirvana",
-	#    "type": "artist"
-	#"Authorization": "WqPZVKGWxZUTAPtqXjZEnQvihsfPlXUyELwNzTvx"
+	 #    "query": "nirvana",
+	 #    "type": "artist"
+	 #"Authorization": "WqPZVKGWxZUTAPtqXjZEnQvihsfPlXUyELwNzTvx"
     #}
 
     #artist = requests.get(url, headers=headers)
@@ -111,17 +83,6 @@ def about():
     #print(artist.text)
     return render_template('about.html')
     
-# ...
-
-@app.route('/comments/')
-def comments():
-    comments = ['This is the first comment.',
-                'This is the second comment.',
-                'This is the third comment.',
-                'This is the fourth comment.'
-                ]
-
-    return render_template('comments.html', comments=comments)
 
 '''
 @app.route('/artist/<id>/')
@@ -138,48 +99,7 @@ def artist(id):
     
     return render_template('artist.html', artist=artist.json())
 '''
-
-@app.route('/ajax/<timeframe>/')
-def ajax(timeframe):
-    print(timeframe)
-    artists = { 
-        1905:"The Killers", 
-        809:"Sharon Van Etten", 
-        1500: "Simple Minds", 
-        1800:"Nirvana",
-        3200:"Lucio Dalla",
-        6400:"Claudio Baglioni"}
-
-    return jsonify(artists)
     
-@app.route('/ajax4/<start>/<end>/')
-def ajax4(start, end):
-    print(start)
-    print(end)
-    artists = { 
-        1905:"The Distillers", 
-        809:"OMD", 
-        1500: "Rancid", 
-        1800:"Sex Pistols",
-        3200:"Brody Dalle",
-        6400:"The Interrupters"}
-
-    return jsonify(artists)
-
-
-@app.route('/ajax2/<chart_type>/')
-def ajax2(chart_type):
-	print("---")
-	print(chart_type)
-	print("---")
-	artists = listreturn2()
-    
-	return jsonify(artists)
-
-
-
-
-
 @app.route('/report/', methods = ['POST'])
 def report():
 	if request.method == 'POST':
@@ -217,71 +137,107 @@ def search():
 @app.route('/start/')
 def start():
 	#return render_template('start.html')
-	listreturn3()
-	return render_template('start.html', artists=listreturn3())
+	#sqlquery = 'select artist,count(artist) from music group by artist order by count(artist) desc limit 20'
+	sqlquery = 'select artist,track,count(track) from music group by track order by count(track) desc limit 20'
+	queryresults = listreturn(sqlquery)
+	print(queryresults)
+	return render_template('start.html', results=queryresults)
+	
+#This is a route/function called by javascript ajax	
+@app.route('/refresh/<range_type>/<chart_type>/')
+def refresh(range_type,chart_type):
+	print(chart_type)
+	
+	endtime = datetime.datetime.today().timestamp()
+	starttime = (datetime.datetime.today() - datetime.timedelta(31)).timestamp()
+	
+	print(endtime)
+	print(starttime)
+	sqlquery = 'select artist,track,count(track) from music where uts > ' + str(starttime) + ' group by track order by count(track) desc limit 20'
+	queryresults = listreturn(sqlquery)
+		
+	return jsonify(queryresults)
 
 
-def listreturn():
-	artists = {
-        "place1":"holder1",
-        "place2":"holder2",
-        "place3":"holder3",
-        "place4":"holder4",
-        "place5":"holder5",
-        "place6":"holder6",
-        "place7":"holder7",
-        "place8":"holder8",
-        "place9":"holder9",
-        "place10":"holder10",
-        "place11":"holder11",
-        "place12":"holder12",
-        "place13":"holder13",
-        "place14":"holder14",
-        "place15":"holder15",
-        "place16":"holder16",
-        "place17":"holder17",
-        "place18":"holder18",
-        "place19":"holder19",
-        "place20":"holder20"
-	}
-    
-	return artists
-
-
-def listreturn2():
-	artists = {
-   	"2place1":"2holder1",
-      "2place2":"2holder2",
-      "2place3":"2holder3",
-      "2place4":"2holder4",
-      "2place5":"2holder5",
-      "2place6":"2holder6",
-      "2place7":"2holder7",
-      "2place8":"2holder8",
-      "2place9":"2holder9",
-      "2place10":"2holder10",
-      "2place11":"2holder11",
-      "2place12":"2holder12",
-      "2place13":"2holder13",
-      "2place14":"2holder14",
-      "2place15":"2holder15",
-      "2place16":"2holder16",
-      "2place17":"2holder17",
-      "2place18":"2holder18",
-      "2place19":"2holder19",
-      "2place20":"2holder20"
-	}
-     
-	return artists
-
-def listreturn3():
-	artists = {}
+def listreturn(sqlquery):
+	print(sqlquery)
+	queryresults_dict = {}
 	conn = get_db_connection()
-	results = conn.execute('SELECT artist FROM music limit 20').fetchall()
-	index = 1
+	#DO NOT execute fetchall !!!
+	#results = conn.execute(sqlquery).fetchall()
+		
+	#DO NOT USE row_factory
+	#conn.row_factory = sqlite3.Row
+	#conn.row_factory = lambda cursor, row: row
+	
+	'''
+	This is a sample of how the dictionary is built:
+	{
+	0: ['underground_vandalz.jpg', 'Underground Vandalz', 'The Threshold Of Death', 219], 
+	1: ['the_mahones.jpg', 'The Mahones', 'Drunken Lazy Bastard', 194], 
+	2: ['the_distillers.jpg', 'The Distillers', 'Hall of Mirrors', 73], 
+	3: ['yungblud_ft_machine_gun_kelly.jpg', 'YUNGBLUD ft Machine Gun Kelly', 'Acting Like That', 73], 
+	4: ['acdc.jpg', 'AC/DC', 'Moneytalks', 72], 
+	5: ['umberto_tozzi.jpg', 'Umberto Tozzi', 'Tu', 70], 
+	6: ['rancid.jpg', 'Rancid', 'Ghost of a Chance', 70], ...
+	}
+
+	
+	'''	
+		
+	c = conn.cursor()
+	results = c.execute(sqlquery)
+	index = 0
 	for row in results:
-		artists[index]=row[0]
+		#output = ""
+		queryresults_list = []
+		#row[0] contains the artist name, with spaces and upper/lower cases
+		#remove spaces and convert to lowercase for image jpg match of artist
+		artist_name_imgfile = row[0].replace(" ", "_").lower()+".jpg"
+		#AC/DC FILE ISSUE MANAGEMENT :-)
+		artist_name_imgfile = artist_name_imgfile.replace("/","")
+		spoty_get_artist_img(row[0], os.path.join(app.root_path, 'static/images', artist_name_imgfile))
+		queryresults_list.append(artist_name_imgfile)
+		for item in row:
+			queryresults_list.append(item)
+			#output = output + str(item) + "|"
+		#Slicing method to remove last char from a string
+		#output = output[:len(output)-1]
+		
+		#print("------", output)
+		queryresults_dict[index] = queryresults_list  
+		
 		index = index + 1
-		print(row[0])
-	conn.close()
-	return artists
+
+	#return music_results, artist_name_imgfile
+	return queryresults_dict
+	
+def spoty_get_artist_img(artist_name, artist_name_imgfile):
+	if os.path.isfile(artist_name_imgfile):	
+		print("ciao " + artist_name)
+	else:
+		print("non ci sono")
+		
+		spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials())
+
+		results = spotify.search(q='artist:' + artist_name, type='artist')
+		items = results['artists']['items']
+		if len(items) > 0:
+			#spotify find results but maybe without url images
+			artist = items[0]
+			try:
+				print(artist['name'], artist['images'][0]['url'])
+				url = artist['images'][0]['url']
+			except:
+				print("No image for ", artist['name'])
+				url = 'https://guardian.ng/wp-content/uploads/2020/10/Music-art.-Photo-Pinterest-870x598.jpg'
+		else:
+			#generic pic if no spotify image is available
+			print("No image for ", artist['name'])
+			url = 'https://guardian.ng/wp-content/uploads/2020/10/Music-art.-Photo-Pinterest-870x598.jpg'
+			
+		response = requests.get(url)
+		with open(os.path.join(app.root_path, 'static/images', artist_name_imgfile), "wb") as f:
+			f.write(response.content)
+			
+			

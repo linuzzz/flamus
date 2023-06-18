@@ -14,13 +14,14 @@
 
 <link rel="stylesheet" href=https://fonts.googleapis.com/css?family=Poppins>
 
+
 <script src="/static/scripts/script.js"></script>
 
 <style>
 
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 
-body {font-size:16px;}
+body,p {font-size:1em;}
 
 .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
 
@@ -47,7 +48,7 @@ body {font-size:16px;}
 
   <div class="w3-bar-block w3-border w3-border-white w3-margin">
 
-    <a href="#" onclick="w3_close();disable_input_date();loadxml2()" class="w3-bar-item w3-button w3-hover-white">Last Month</a>
+    <a href="#" onclick="w3_close();disable_input_date();loadxml(1)" class="w3-bar-item w3-button w3-hover-white">Last Month</a>
 
     <a href="#showcase" onclick="w3_close();disable_input_date()" class="w3-bar-item w3-button w3-hover-white">Last 3 Months</a>
 
@@ -118,8 +119,8 @@ body {font-size:16px;}
  
 
   <!-- Photo grid (modal) -->
-  
-{% for key,value in artists.items() %}
+  <!-- results it's a python dictionary sent by python app, it requires .items() for iterate key, values -->
+{% for index, values in results.items() %}
 
 {% if (loop.index - 1) % 4 == 0 %}
 <div class="w3-row-padding">
@@ -130,21 +131,24 @@ body {font-size:16px;}
 <div class="w3-light-grey">
 
 			<!-- It's important to increment imgsrc id for later retrivial in javascript ajax-->
-        <img id="imgsrc-{{ loop.index }}" src="/static/images/img.jpg" style="width:100%" onclick="onClick(this)" alt="{{key}}-{{value}}">
+			<!-- key to set same height in cards: height: max(10rem, 30vh) -->
+			<!-- Rememebr that minimum font size maybe cannot be changed by the browser per user setting -->
+        <img id="imgsrc-{{ loop.index }}" src="/static/images/{{values[0]}}" style="height: max(10rem, 30vh);width:100%;object-fit:cover;" onclick="onClick(this)" alt="{{value}}">
 
 <!-- It's also important to increment name (for artist/song/album) id for later retrivial in javascript ajax-->
 <!--
 <div id="name-{{ loop.index }}" class="w3-small w3-white w3-display-bottomleft">{{key}}-{{value}}</div>
 -->     
-
-        <div class="w3-container">
-
-          <h3 id="titlename-{{ loop.index }}">{{key}}-{{value}}</h3>
-
-          <!-- <p class="w3-opacity">CEO & Founder</p> -->
-          
-        </div>
-
+		<!-- First item is the image jpg name, that's why I start from 1 instead of 0 for iteration -->
+		<!-- This will print info related to artist/song/album based on select query executed-->
+		<!-- |lenght is a very useful Jinja template filter -->
+		<!-- wow note loop.index in jinja is indexing the most inner loop, so...it works with a loop inside another one -->
+		{% set outer_loop = loop.index %}
+		{% for v in range(1, values|length) %}
+			<p id="titlename-{{ outer_loop }}-{{ loop.index }}" style="margin:0;line-height:1.2em;">{{values[v]}}</p>
+		
+	   {% endfor %} 
+	   
       </div>
 
 </div>
@@ -231,7 +235,7 @@ body {font-size:16px;}
 
       <div class="w3-light-grey">
 
-        <img src="/static/images/img.jpg" alt="John" style="width:100%">
+        <img src="/static/images/the_mahones.jpg" alt="John" style="width:100%">
 
         <div class="w3-container">
 
@@ -251,7 +255,7 @@ body {font-size:16px;}
 
       <div class="w3-light-grey">
 
-        <img src="/static/images/img.jpg" alt="Jane" style="width:100%">
+        <img src="/static/images/umberto_tozzi.jpg" alt="Jane" style="width:100%">
 
         <div class="w3-container">
 
