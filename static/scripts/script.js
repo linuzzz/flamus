@@ -1,59 +1,73 @@
 //function to enable/disable the fields for custom data range selection (start/end)
+/*
 function disableinputs() {
-	lm = document.getElementById("lm");
-	lm.style.background = "yellow";	
 	s = document.getElementById("date-start");
    s.disabled= true;
    e = document.getElementById("date-end");
    e.disabled = true;
 }
+*/
 
 //function to enable/disable the fields for custom data range selection (start/end)
+/*
 function enableinputs() {
 	s = document.getElementById("date-start");
    s.disabled= false;
    e = document.getElementById("date-end");
    e.disabled = false;
 }
-
+*/
 
 function loadxml(menu) {
+		
+	switch (menu) {
+  			//change the subtitle of the page based on kind of report selected
+  			case 1:
+    			document.getElementById("h1header").innerHTML = "Last Month report selected";
+    			break;
+  			case 2:
+  				document.getElementById("h1header").innerHTML = "Last 3 Month report selected";
+  				break;
+    		case 3:
+    			document.getElementById("h1header").innerHTML = "Last Year report selected";
+    			break;
+    		case 4:
+    			document.getElementById("h1header").innerHTML = "From the beginning report selected";
+    			break;
+    		case 5:
+    			document.getElementById("h1header").innerHTML = "Custom range report selected";
+    			break;
+    		
+   }
+    			
   	const xhttp = new XMLHttpRequest();
   	xhttp.onload = function() {
-  		switch (menu) {
-  			case 1:
-    			document.getElementById("chart_title").innerHTML = "Last Month report selected";
-  			case 2:
-  				document.getElementById("chart_title").innerHTML = "Last 3 Month report selected";
-    		case 3:
-    			document.getElementById("chart_title").innerHTML = "Last Year report selected";
-    		case 4:
-    			document.getElementById("chart_title").innerHTML = "From the beginning report selected";
-    		case 5:
-    			document.getElementById("chart_title").innerHTML = "Custom range report selected";
-  			default:
-  				//only for debugging in case of errors
-    			document.getElementById("chart_title").innerHTML = "DEFAULT???";
+  		//function to refread img src and <p> element in html web page
+  		refresh_data(JSON.parse(this.responseText))
+  			
 		}
-
-		//change the subtitle of the page based on kind of report selected
-   	document.getElementById("chart_title").innerHTML = "Last Month report selected";
-    	//function to refread img src and <p> element in html web page    
-   	refresh_data(JSON.parse(this.responseText))
-   }
-   
+  	
    //get radio button selection among artist/song/album
   	chart_type = document.getElementsByName("chart_type");
-	
+	chart = 0;
 	for (i = 0; i < chart_type.length; i++) {
    	if (chart_type[i].checked) {
   			chart_type_text = chart_type[i].value;
+  			chart = i;
   			break;
   			}
-   }  
+   } 
+   
+   starttime = document.getElementById("date-start").value;
+	endtime = document.getElementById("date-end").value;
   	
   	//ajax call
-  	xhttp.open("GET", "/refresh/" + menu + "/" + chart_type_text + "/");
+  	if (menu===5) {
+  		xhttp.open("GET", "/refresh/" + menu + "/" + chart + "/" + starttime + "/" + endtime + "/");
+  	}
+  	else {
+  		xhttp.open("GET", "/refresh/" + menu + "/" + chart + "/");
+  	}
   	xhttp.send();
 }
 
@@ -77,7 +91,8 @@ function refresh_data(obj){
       	var value=obj[key];
         	//console.log(value)
         	//this is the jpg filename of the artist
-        	document.getElementById("imgsrc-"+index).src="/static/images/"+value[0]
+        	document.getElementById("imgsrc-"+index).style.backgroundImage="url('/static/images/"+value[0]+"')"
+        	
         	try{
         		//these are the artist name, song name, album name, etc etc
         		//could be 2 or 3 <p> that's why I use try/catch
@@ -87,7 +102,8 @@ function refresh_data(obj){
         	}
         	catch(err) 
         	{
-        		document.getElementById("titlename-3").innerHTML = "";	
+        		console.log("2 righe")
+        		//document.getElementById("titlename-3").innerHTML = "";	
         	}
         		//next item in dictionary
         		index = index +1;
@@ -113,8 +129,6 @@ function w3_close() {
   document.getElementById("myOverlay").style.display = "none";
 
 }
-
- 
 
 // Modal Image Gallery - From w3 Template
 

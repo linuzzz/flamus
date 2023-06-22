@@ -8,7 +8,7 @@ import spotipy
 import sys
 from spotipy.oauth2 import SpotifyClientCredentials
 
-import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -17,33 +17,11 @@ def get_db_connection():
     #conn.row_factory = sqlite3.Row
     return conn
 
-
+#main function returning a responsive page based on css grid
 @app.route('/')
 def hello():
-    artists = {
-        "place1":"holder1",
-        "place2":"holder2",
-        "place3":"holder3",
-        "place4":"holder4",
-        "place5":"holder5",
-        "place6":"holder6",
-        "place7":"holder7",
-        "place8":"holder8",
-        "place9":"holder9",
-        "place10":"holder10",
-        "place11":"holder11",
-        "place12":"holder12",
-        "place13":"holder13",
-        "place14":"holder14",
-        "place15":"holder15",
-        "place16":"holder16",
-        "place17":"holder17",
-        "place18":"holder18",
-        "place19":"holder19",
-        "place20":"holder20"
-    }
-
-    return render_template('index-css-grid.html', artists=artists)
+	sqlquery = 'select artist,count(artist) from music group by artist order by count(artist) desc limit 20'
+	return render_template('index-css-grid.html', results=listreturn(sqlquery))
     
 @app.route('/about/')
 def about():
@@ -130,10 +108,12 @@ def report():
     
 		return render_template('report.html', artists=listreturn())
     
+#Old function for a template using w3.css    
 @app.route('/search/')
 def search():
 	return render_template('query.html')
 
+#Old function for a template using w3.css
 @app.route('/start/')
 def start():
 	#return render_template('start.html')
@@ -143,19 +123,51 @@ def start():
 	print(queryresults)
 	return render_template('start.html', results=queryresults)
 	
-#This is a route/function called by javascript ajax	
-@app.route('/refresh/<range_type>/<chart_type>/')
-def refresh(range_type,chart_type):
-	print(chart_type)
+#This is a route/function called by javascript ajax
+# s = starttime, e = endtime	
+@app.route('/refresh/<range_type>/<chart_type>/', defaults={ 's': '', 'e': '' })
+@app.route('/refresh/<range_type>/<chart_type>/<s>/<e>/')
+def refresh(range_type,chart_type,s,e):
+	print('boooooh', chart_type)
+	print('ma dai',s,e)
+	sqlquery = ''
 	
-	endtime = datetime.datetime.today().timestamp()
-	starttime = (datetime.datetime.today() - datetime.timedelta(31)).timestamp()
+	endtime = datetime.today().timestamp()
+	# for the '4' case don't do anything, it's from beginning, so no starttime defined
+	match range_type:
+		case '1':
+			starttime = (datetime.today() - timedelta(31)).timestamp()
+		case '2':
+			starttime = (datetime.today() - timedelta(90)).timestamp()
+		case '3':
+			starttime = (datetime.today() - timedelta(365)).timestamp()
+		case '5':
+			starttime = datetime.strptime(s, '%Y-%m-%d').timestamp()
+			endtime = datetime.strptime(e, '%Y-%m-%d').timestamp()
+			print("---")
+			print(starttime)
+			print(endtime)
 	
-	print(endtime)
-	print(starttime)
-	sqlquery = 'select artist,track,count(track) from music where uts > ' + str(starttime) + ' group by track order by count(track) desc limit 20'
+	match range_type:
+		case '1' | '2' | '3' | '5':
+			match chart_type:
+				case '0':
+					sqlquery = 'select artist,count(artist) from music where uts > ' + str(starttime) + ' and uts < ' + str(endtime) + ' group by artist order by count(artist) desc limit 20'
+				case '1':
+					sqlquery = 'select artist,track,count(track) from music where uts > ' + str(starttime) + ' and uts < ' + str(endtime) + ' group by track order by count(track) desc limit 20'
+				case '2':
+					sqlquery = 'select artist,album,count(album) from music where uts > ' + str(starttime) + ' and uts < ' + str(endtime) + ' group by album order by count(album) desc limit 20'
+		case '4':
+			print("stancccooooooooo")
+			match chart_type:
+				case '0':
+					sqlquery = 'select artist,count(artist) from music group by artist order by count(artist) desc limit 20'
+				case '1':
+					sqlquery = 'select artist,track,count(track) from music group by track order by count(track) desc limit 20'
+				case '2':
+					sqlquery = 'select artist,album,count(album) from music  group by album order by count(album) desc limit 20'
+				
 	queryresults = listreturn(sqlquery)
-		
 	return jsonify(queryresults)
 
 
@@ -181,7 +193,6 @@ def listreturn(sqlquery):
 	5: ['umberto_tozzi.jpg', 'Umberto Tozzi', 'Tu', 70], 
 	6: ['rancid.jpg', 'Rancid', 'Ghost of a Chance', 70], ...
 	}
-
 	
 	'''	
 		
@@ -200,11 +211,10 @@ def listreturn(sqlquery):
 		queryresults_list.append(artist_name_imgfile)
 		for item in row:
 			queryresults_list.append(item)
-			#output = output + str(item) + "|"
+		
 		#Slicing method to remove last char from a string
 		#output = output[:len(output)-1]
 		
-		#print("------", output)
 		queryresults_dict[index] = queryresults_list  
 		
 		index = index + 1
@@ -216,7 +226,7 @@ def spoty_get_artist_img(artist_name, artist_name_imgfile):
 	if os.path.isfile(artist_name_imgfile):	
 		print("ciao " + artist_name)
 	else:
-		print("non ci sono")
+		print("non ci sono " + artist_name)
 		
 		spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials())
 
@@ -229,11 +239,11 @@ def spoty_get_artist_img(artist_name, artist_name_imgfile):
 				print(artist['name'], artist['images'][0]['url'])
 				url = artist['images'][0]['url']
 			except:
-				print("No image for ", artist['name'])
+				print("No image for ", artist_name)
 				url = 'https://guardian.ng/wp-content/uploads/2020/10/Music-art.-Photo-Pinterest-870x598.jpg'
 		else:
 			#generic pic if no spotify image is available
-			print("No image for ", artist['name'])
+			print("No image for ", artist_name)
 			url = 'https://guardian.ng/wp-content/uploads/2020/10/Music-art.-Photo-Pinterest-870x598.jpg'
 			
 		response = requests.get(url)

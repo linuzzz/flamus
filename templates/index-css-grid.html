@@ -2,224 +2,82 @@
 
 <html>
 
-
 <head>
 	<title>LastFM Charts</title>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/static/styles/css-grid.css" rel="stylesheet">
 	
-	<link rel="stylesheet" href=https://fonts.googleapis.com/css?family=Rubik>
+	<link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Abel'>
 	<script src="/static/scripts/script.js"></script>
 </head>
 
 <body>
 
 
-
 <div class="wrapper">
-  <header>Header</header>
+  <header><h1 id="h1header">Top Artist from Beginning</h1></header>
   <article>
     
 <div class="boxes">
 
-  <div class="box" style="background-image: url('/static/images/rancid.jpg');">
+	<!-- results it's a python dictionary sent by python app, it requires .items() for iterate key, values -->
+	{% for index, values in results.items() %}
+
+	<div id="imgsrc-{{ loop.index }}" class="box" style="background-image: url('/static/images/{{values[0]}}');">
   
-  <div class="boxtext">
-	<p>Linea11</p>
-    <p>Linea21</p>
-	<p>Linea31</p>
+  	<div class="boxtext">
+  		{% set outer_loop = loop.index %}
+		{% for v in range(1, values|length) %}
+			<p id="titlename-{{ outer_loop }}-{{ loop.index }}" style="margin:0;line-height:1.2em;">{{values[v]}}</p>
+		{% endfor %} 		
+	</div>
   
-  </div>
+	</div>
   
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/the_interrupters.jpg');">
-	<div class="boxtext">
-	<p>Lineaaaa11</p>
-    <p>Lineaaaa21</p>
-	<p>Lineaaaa31</p>
-  
-  </div>
-  
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/baruffa.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  
-  <div class="box">E</div>
-  <div class="box">F</div>
-  <div class="box">G</div>
-  <div class="box">H</div>
-  <div class="box">I</div>
-  <div class="box">L</div>
-  <div class="box">M</div>
-  <div class="box">N</div>
-  <div class="box">O</div>
-  <div class="box">P</div>
-  <div class="box">Q</div>
-  <div class="box">R</div>
-  <div class="box">S</div>
-  <div class="box">T</div>
-  <div class="box">T1</div>
-  <div class="box">T2</div>
-  <div class="box">T3</div>
-  <div class="box">T4</div>
-  <div class="box">T5</div>
+	{% endfor %}
   
 </div>  
+        
     
-    
-    
-    
-  </article>
+</article>
   
-   
-  <aside>
-  <p><button class="menuitem" id="lm" onclick="disableinputs()">Last Month</button>
-	<p><button class="menuitem" id="l3m" onclick="disableinputs()">Last 3 Months</button>
-	<p><button class="menuitem" id="ly" onclick="disableinputs()">Last Year</button>
-	<p><button class="menuitem" id="ftb" onclick="disableinputs()">From the beginning</button>
-	<p><button class="menuitem" id="ci" onclick="enableinputs()">Custom Interval</button>
-	<p><input class="menuitem" id="date-start" type="date" value="" />
-	<p><input class="menuitem" id="date-end" type="date" value="" />
-   </aside>
+<aside>
+	<div class="menutime">
+  	<!--
+  		<div class="menu"><button id="lm" onclick="disableinputs();loadxml(1)">Last Month</button></div>
+  	-->
+  	<div class="menu"><button id="lm" onclick="loadxml(1)">Last Month</button></div>
+	<div class="menu"><button id="l3m" onclick="loadxml(2)">Last 3 Months</button></div>
+	<div class="menu"><button id="ly" onclick="loadxml(3)">Last Year</button></div>
+	<div class="menu"><button id="ftb" onclick="loadxml(4)">From the beginning</button></div>
+	<div class="menu"><button id="ci" onclick="loadxml(5)">Custom Interval</button></div>
+	</div>
+	
+	<p></p>
+
+	<div class="menudate">
+	<div class="menu"><input class="inputdate" id="date-start" type="date" value="" /></div>
+	<div class="menu"><input class="inputdate" id="date-end" type="date" value="" /></div>
+	</div>
+
+	<p></p>
+
+	<div class="menutype">
+	<div class="menu"><input type="radio" name="chart_type" value="artist" checked>
+	<label>Artist</label></div>
+
+	<div class="menu"><input type="radio" name="chart_type" value="song">
+	<label>Song</label></div>
+
+ 	<div class="menu"><input type="radio" name="chart_type" value="album">
+	<label>Album</label></div>
+	</div>	
+	
+</aside>
   
-  <footer>Footer</footer>
+<footer>© by Paolo C.</footer>
 </div>
-
-<!--
-
-
-<div id="head-title"><h1>Report</h1></div>
-
-
-<div class="content">
-
-  <div>
-	<p><button class="vmenuitem" id="lm" onclick="disableinputs()">Last Month</button>
-	<p><button class="vmenuitem" id="l3m" onclick="disableinputs()">Last 3 Months</button>
-	<p><button class="vmenuitem" id="ly" onclick="disableinputs()">Last Year</button>
-	<p><button class="vmenuitem" id="ftb" onclick="disableinputs()">From the beginning</button>
-	<p><button class="vmenuitem" id="ci" onclick="enableinputs()">Custom Interval</button>
-	<p><input class="vmenuitem" id="date-start" type="date" value="" />
-	<p><input class="vmenuitem" id="date-end" type="date" value="" />
-
-  </div>
-
-
-
-<div class="boxes">
-
-  <div class="box" style="background-image: url('/static/images/rancid.jpg');">
-  
-  <div class="boxtext">
-	<p>Linea11</p>
-    <p>Linea21</p>
-	<p>Linea31</p>
-  
-  </div>
-  
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/the_interrupters.jpg');">
-	<div class="boxtext">
-	<p>Lineaaaa11</p>
-    <p>Lineaaaa21</p>
-	<p>Lineaaaa31</p>
-  
-  </div>
-  
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/baruffa.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
-  <div class="boxtext">
-	<p>Lineabbb11</p>
-    <p>Lineabbb1121</p>
-	<p>Lineb31</p>
-  </div>
-  </div>
-  
-  
-  <div class="box">E</div>
-  <div class="box">F</div>
-  <div class="box">G</div>
-  <div class="box">H</div>
-  <div class="box">I</div>
-  <div class="box">L</div>
-  <div class="box">M</div>
-  <div class="box">N</div>
-  <div class="box">O</div>
-  <div class="box">P</div>
-  <div class="box">Q</div>
-  <div class="box">R</div>
-  <div class="box">S</div>
-  <div class="box">T</div>
-  <div class="box">T1</div>
-  <div class="box">T2</div>
-  <div class="box">T3</div>
-  <div class="box">T4</div>
-  <div class="box">T5</div>
-  
-</div>  
-
-</div>
-
--->
 
 </body>
 </html>
