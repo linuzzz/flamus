@@ -1,19 +1,17 @@
 //function to enable/disable the fields for custom data range selection (start/end)
-function disableinputs() {
-	lm = document.getElementById("lm");
-	lm.style.background = "yellow";	
-	s = document.getElementById("date-start");
-   s.disabled= true;
-   e = document.getElementById("date-end");
-   e.disabled = true;
+function disable_input_date() {
+	s = document.getElementById("start");
+   s.classList.add("w3-disabled");
+   e = document.getElementById("end");
+   e.classList.add("w3-disabled");
 }
 
 //function to enable/disable the fields for custom data range selection (start/end)
-function enableinputs() {
-	s = document.getElementById("date-start");
-   s.disabled= false;
-   e = document.getElementById("date-end");
-   e.disabled = false;
+function enable_input_date() {
+	s = document.getElementById("start");
+    s.classList.remove("w3-disabled");
+    e = document.getElementById("end");
+    e.classList.remove("w3-disabled");
 }
 
 

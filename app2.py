@@ -43,7 +43,7 @@ def hello():
         "place20":"holder20"
     }
 
-    return render_template('music.html', artists=artists)
+    return render_template('index-css-grid.html', artists=artists)
     
 @app.route('/about/')
 def about():

@@ -1,0 +1,229 @@
+<!doctype html>
+
+<html>
+
+
+<head>
+	<title>LastFM Charts</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/styles/css-grid.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href=https://fonts.googleapis.com/css?family=Rubik>
+	<script src="/static/scripts/script.js"></script>
+</head>
+
+<body>
+
+
+
+<div class="wrapper">
+  <header>Header</header>
+  <article>
+    
+<div class="boxes">
+
+  <div class="box" style="background-image: url('/static/images/rancid.jpg');">
+  
+  <div class="boxtext">
+	<p>Linea11</p>
+    <p>Linea21</p>
+	<p>Linea31</p>
+  
+  </div>
+  
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/the_interrupters.jpg');">
+	<div class="boxtext">
+	<p>Lineaaaa11</p>
+    <p>Lineaaaa21</p>
+	<p>Lineaaaa31</p>
+  
+  </div>
+  
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/baruffa.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  
+  <div class="box">E</div>
+  <div class="box">F</div>
+  <div class="box">G</div>
+  <div class="box">H</div>
+  <div class="box">I</div>
+  <div class="box">L</div>
+  <div class="box">M</div>
+  <div class="box">N</div>
+  <div class="box">O</div>
+  <div class="box">P</div>
+  <div class="box">Q</div>
+  <div class="box">R</div>
+  <div class="box">S</div>
+  <div class="box">T</div>
+  <div class="box">T1</div>
+  <div class="box">T2</div>
+  <div class="box">T3</div>
+  <div class="box">T4</div>
+  <div class="box">T5</div>
+  
+</div>  
+    
+    
+    
+    
+  </article>
+  
+   
+  <aside>
+  <p><button class="menuitem" id="lm" onclick="disableinputs()">Last Month</button>
+	<p><button class="menuitem" id="l3m" onclick="disableinputs()">Last 3 Months</button>
+	<p><button class="menuitem" id="ly" onclick="disableinputs()">Last Year</button>
+	<p><button class="menuitem" id="ftb" onclick="disableinputs()">From the beginning</button>
+	<p><button class="menuitem" id="ci" onclick="enableinputs()">Custom Interval</button>
+	<p><input class="menuitem" id="date-start" type="date" value="" />
+	<p><input class="menuitem" id="date-end" type="date" value="" />
+   </aside>
+  
+  <footer>Footer</footer>
+</div>
+
+<!--
+
+
+<div id="head-title"><h1>Report</h1></div>
+
+
+<div class="content">
+
+  <div>
+	<p><button class="vmenuitem" id="lm" onclick="disableinputs()">Last Month</button>
+	<p><button class="vmenuitem" id="l3m" onclick="disableinputs()">Last 3 Months</button>
+	<p><button class="vmenuitem" id="ly" onclick="disableinputs()">Last Year</button>
+	<p><button class="vmenuitem" id="ftb" onclick="disableinputs()">From the beginning</button>
+	<p><button class="vmenuitem" id="ci" onclick="enableinputs()">Custom Interval</button>
+	<p><input class="vmenuitem" id="date-start" type="date" value="" />
+	<p><input class="vmenuitem" id="date-end" type="date" value="" />
+
+  </div>
+
+
+
+<div class="boxes">
+
+  <div class="box" style="background-image: url('/static/images/rancid.jpg');">
+  
+  <div class="boxtext">
+	<p>Linea11</p>
+    <p>Linea21</p>
+	<p>Linea31</p>
+  
+  </div>
+  
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/the_interrupters.jpg');">
+	<div class="boxtext">
+	<p>Lineaaaa11</p>
+    <p>Lineaaaa21</p>
+	<p>Lineaaaa31</p>
+  
+  </div>
+  
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/baruffa.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  <div class="box" style="background-image: url('/static/images/acdc.jpg');">
+  <div class="boxtext">
+	<p>Lineabbb11</p>
+    <p>Lineabbb1121</p>
+	<p>Lineb31</p>
+  </div>
+  </div>
+  
+  
+  <div class="box">E</div>
+  <div class="box">F</div>
+  <div class="box">G</div>
+  <div class="box">H</div>
+  <div class="box">I</div>
+  <div class="box">L</div>
+  <div class="box">M</div>
+  <div class="box">N</div>
+  <div class="box">O</div>
+  <div class="box">P</div>
+  <div class="box">Q</div>
+  <div class="box">R</div>
+  <div class="box">S</div>
+  <div class="box">T</div>
+  <div class="box">T1</div>
+  <div class="box">T2</div>
+  <div class="box">T3</div>
+  <div class="box">T4</div>
+  <div class="box">T5</div>
+  
+</div>  
+
+</div>
+
+-->
+
+</body>
+</html>
+
+
+
+
